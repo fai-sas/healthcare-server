@@ -5,6 +5,7 @@ import { userRoutes } from './app/modules/User/user.route'
 import { AdminRoutes } from './app/modules/Admin/admin.route'
 import notFound from './app/middlewares/notFound'
 import globalErrorHandler from './app/middlewares/globalErrorHandler'
+import router from './app/routes'
 
 const app: Application = express()
 app.use(cors())
@@ -43,8 +44,7 @@ app.get('/', (req: Request, res: Response) => {
   `)
 })
 
-app.use('/api/v1/user', userRoutes)
-app.use('/api/v1/admin', AdminRoutes)
+app.use('/api/v1', router)
 
 app.use(globalErrorHandler)
 app.use(notFound)
