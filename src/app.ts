@@ -3,6 +3,8 @@ import cors from 'cors'
 import moment from 'moment'
 import { userRoutes } from './app/modules/User/user.route'
 import { AdminRoutes } from './app/modules/Admin/admin.route'
+import notFound from './app/middlewares/notFound'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 const app: Application = express()
 app.use(cors())
@@ -43,5 +45,8 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/admin', AdminRoutes)
+
+app.use(globalErrorHandler)
+app.use(notFound)
 
 export default app

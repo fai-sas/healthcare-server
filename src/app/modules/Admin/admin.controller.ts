@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { AdminService } from './admin.service'
 import { adminFilterableFields } from './admin.constant'
-import pick from '../../../utils/pick'
+import pick from '../../utils/pick'
 
 const getAllFromDB = async (req: Request, res: Response) => {
   try {
