@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
 import AppError from '../errors/AppError'
+import { jwtHelpers } from '../utils/jwtHelpers'
+import { Secret } from 'jsonwebtoken'
+import config from '../config'
 
 const auth = (...roles: string[]) => {
   return async (
@@ -23,7 +26,7 @@ const auth = (...roles: string[]) => {
       req.user = verifiedUser
 
       if (roles.length && !roles.includes(verifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden!')
+        throw new AppError(httpStatus.FORBIDDEN, 'Forbidden!')
       }
       next()
     } catch (err) {
