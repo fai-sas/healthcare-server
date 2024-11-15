@@ -3,6 +3,6 @@ import { AdminController } from './admin.controller'
 
 const router = express.Router()
 
-router.get('/', AdminController.getAllFromDB)
+router.get('/', AdminController.getAllAdminsFromDB)
 
 export const AdminRoutes = router
