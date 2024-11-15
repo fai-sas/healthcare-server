@@ -6,6 +6,10 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
     success: false,
     status: status.NOT_FOUND,
     message: 'API Not Found',
+    error: {
+      path: req.originalUrl,
+      message: 'Your requested path is not found!',
+    },
   })
 }
 
