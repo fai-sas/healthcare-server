@@ -6,7 +6,7 @@ import catchAsync from '../../utils/catchAsync'
 import sendResponse from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 
-const getAllAdminsFromDB: RequestHandler = catchAsync(
+const getAllAdmins: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, adminFilterableFields)
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
@@ -23,6 +23,19 @@ const getAllAdminsFromDB: RequestHandler = catchAsync(
   }
 )
 
+const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const result = await AdminService.getSingleAdminFromDB(id)
+  sendResponse(res, {
+    status: httpStatus.OK,
+    success: true,
+    message: 'Admin data fetched by id!',
+    data: result,
+  })
+})
+
 export const AdminController = {
-  getAllAdminsFromDB,
+  getAllAdmins,
+  getSingleAdmin,
 }
