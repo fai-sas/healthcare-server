@@ -82,7 +82,29 @@ const getSingleAdminFromDB = async (id: string): Promise<Admin | null> => {
   return result
 }
 
+const updateAdminIntoDB = async (
+  id: string,
+  data: Partial<Admin>
+): Promise<Admin> => {
+  await prisma.admin.findUniqueOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+  })
+
+  const result = await prisma.admin.update({
+    where: {
+      id,
+    },
+    data,
+  })
+
+  return result
+}
+
 export const AdminService = {
   getAllAdminsFromDB,
   getSingleAdminFromDB,
+  updateAdminIntoDB,
 }
