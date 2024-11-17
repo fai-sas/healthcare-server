@@ -4,6 +4,7 @@ import { UserRole } from '@prisma/client'
 import { imageUploader } from '../../utils/imageUploader'
 import { userValidation } from './user.validation'
 import auth from '../../middlewares/auth'
+import validateRequest from '../../middlewares/validateRequest'
 
 const router = express.Router()
 
@@ -40,6 +41,13 @@ router.get(
   '/',
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   userController.getAllUsers
+)
+
+router.patch(
+  '/:id/status',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  validateRequest(userValidation.updateStatus),
+  userController.changeProfileStatus
 )
 
 export const userRoutes = router

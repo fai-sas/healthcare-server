@@ -183,9 +183,24 @@ const getAllUsersFromDB = (params, options) => __awaiter(void 0, void 0, void 0,
         data: result,
     };
 });
+const changeProfileStatusIntoDb = (id, status) => __awaiter(void 0, void 0, void 0, function* () {
+    yield prisma_1.default.user.findUniqueOrThrow({
+        where: {
+            id,
+        },
+    });
+    const updateUserStatus = yield prisma_1.default.user.update({
+        where: {
+            id,
+        },
+        data: status,
+    });
+    return updateUserStatus;
+});
 exports.userService = {
     createAdminIntoDb,
     createDoctorIntoDb,
     createPatientIntoDb,
     getAllUsersFromDB,
+    changeProfileStatusIntoDb,
 };

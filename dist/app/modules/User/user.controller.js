@@ -58,9 +58,20 @@ const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result.data,
     });
 }));
+const changeProfileStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield user_service_1.userService.changeProfileStatusIntoDb(id, req.body);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'Users profile status changed!',
+        data: result,
+    });
+}));
 exports.userController = {
     createAdmin,
     createDoctor,
     createPatient,
     getAllUsers,
+    changeProfileStatus,
 };

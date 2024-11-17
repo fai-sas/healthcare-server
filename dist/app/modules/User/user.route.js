@@ -10,6 +10,7 @@ const client_1 = require("@prisma/client");
 const imageUploader_1 = require("../../utils/imageUploader");
 const user_validation_1 = require("./user.validation");
 const auth_1 = __importDefault(require("../../middlewares/auth"));
+const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const router = express_1.default.Router();
 router.post('/create-admin', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), imageUploader_1.imageUploader.upload.single('file'), (req, res, next) => {
     req.body = user_validation_1.userValidation.createAdmin.parse(JSON.parse(req.body.data));
@@ -24,4 +25,5 @@ router.post('/create-patient', imageUploader_1.imageUploader.upload.single('file
     return user_controller_1.userController.createPatient(req, res, next);
 });
 router.get('/', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), user_controller_1.userController.getAllUsers);
+router.patch('/:id/status', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), (0, validateRequest_1.default)(user_validation_1.userValidation.updateStatus), user_controller_1.userController.changeProfileStatus);
 exports.userRoutes = router;

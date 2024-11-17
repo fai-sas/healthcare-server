@@ -1,4 +1,11 @@
-import { Admin, Doctor, Patient, Prisma, UserRole } from '@prisma/client'
+import {
+  Admin,
+  Doctor,
+  Patient,
+  Prisma,
+  UserRole,
+  UserStatus,
+} from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import { Request } from 'express'
 import { TFile } from '../../interfaces/file'
@@ -172,9 +179,27 @@ const getAllUsersFromDB = async (params: any, options: TPaginationOptions) => {
   }
 }
 
+const changeProfileStatusIntoDb = async (id: string, status: UserStatus) => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  })
+
+  const updateUserStatus = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: status,
+  })
+
+  return updateUserStatus
+}
+
 export const userService = {
   createAdminIntoDb,
   createDoctorIntoDb,
   createPatientIntoDb,
   getAllUsersFromDB,
+  changeProfileStatusIntoDb,
 }
