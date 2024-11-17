@@ -15,4 +15,8 @@ router.post('/create-admin', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, 
     req.body = user_validation_1.userValidation.createAdmin.parse(JSON.parse(req.body.data));
     return user_controller_1.userController.createAdmin(req, res, next);
 });
+router.post('/create-doctor', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), imageUploader_1.imageUploader.upload.single('file'), (req, res, next) => {
+    req.body = user_validation_1.userValidation.createDoctor.parse(JSON.parse(req.body.data));
+    return user_controller_1.userController.createDoctor(req, res, next);
+});
 exports.userRoutes = router;

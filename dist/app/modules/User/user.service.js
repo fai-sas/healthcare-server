@@ -60,6 +60,30 @@ const createAdminIntoDb = (req) => __awaiter(void 0, void 0, void 0, function* (
     }));
     return result;
 });
+const createDoctorIntoDb = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = req.file;
+    if (file) {
+        const uploadToCloudinary = yield imageUploader_1.imageUploader.uploadToCloudinary(file);
+        req.body.doctor.profilePhoto = uploadToCloudinary === null || uploadToCloudinary === void 0 ? void 0 : uploadToCloudinary.secure_url;
+    }
+    const hashedPassword = yield bcrypt.hash(req.body.password, 12);
+    const userData = {
+        email: req.body.doctor.email,
+        password: hashedPassword,
+        role: client_1.UserRole.DOCTOR,
+    };
+    const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        yield transactionClient.user.create({
+            data: userData,
+        });
+        const createdDoctorData = yield transactionClient.doctor.create({
+            data: req.body.doctor,
+        });
+        return createdDoctorData;
+    }));
+    return result;
+});
 exports.userService = {
     createAdminIntoDb,
+    createDoctorIntoDb,
 };

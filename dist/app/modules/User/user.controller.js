@@ -25,6 +25,16 @@ const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result,
     });
 }));
+const createDoctor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userService.createDoctorIntoDb(req);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'Doctor Created Successfully!',
+        data: result,
+    });
+}));
 exports.userController = {
     createAdmin,
+    createDoctor,
 };
