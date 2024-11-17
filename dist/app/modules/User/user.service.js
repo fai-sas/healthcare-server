@@ -83,7 +83,31 @@ const createDoctorIntoDb = (req) => __awaiter(void 0, void 0, void 0, function* 
     }));
     return result;
 });
+const createPatientIntoDb = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = req.file;
+    if (file) {
+        const uploadToCloudinary = yield imageUploader_1.imageUploader.uploadToCloudinary(file);
+        req.body.patient.profilePhoto = uploadToCloudinary === null || uploadToCloudinary === void 0 ? void 0 : uploadToCloudinary.secure_url;
+    }
+    const hashedPassword = yield bcrypt.hash(req.body.password, 12);
+    const userData = {
+        email: req.body.patient.email,
+        password: hashedPassword,
+        role: client_1.UserRole.PATIENT,
+    };
+    const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        yield transactionClient.user.create({
+            data: userData,
+        });
+        const createdPatientData = yield transactionClient.patient.create({
+            data: req.body.patient,
+        });
+        return createdPatientData;
+    }));
+    return result;
+});
 exports.userService = {
     createAdminIntoDb,
     createDoctorIntoDb,
+    createPatientIntoDb,
 };
