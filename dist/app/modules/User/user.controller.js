@@ -8,26 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const user_service_1 = require("./user.service");
-const createAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield user_service_1.userService.createAdminIntoDb(req.body);
-        res.status(200).json({
-            success: true,
-            message: 'Admin Created successfully!',
-            data: result,
-        });
-    }
-    catch (err) {
-        res.status(500).json({
-            success: false,
-            message: (err === null || err === void 0 ? void 0 : err.name) || 'Something went wrong',
-            error: err,
-        });
-    }
-});
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userService.createAdminIntoDb(req);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'Admin Created Successfully!',
+        data: result,
+    });
+}));
 exports.userController = {
     createAdmin,
 };

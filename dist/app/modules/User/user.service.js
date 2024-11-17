@@ -35,11 +35,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt = __importStar(require("bcrypt"));
+const imageUploader_1 = require("../../utils/imageUploader");
 const prisma = new client_1.PrismaClient();
-const createAdminIntoDb = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    const hashedPassword = yield bcrypt.hash(data.password, 12);
+const createAdminIntoDb = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = req.file;
+    if (file) {
+        const uploadToCloudinary = yield imageUploader_1.imageUploader.uploadToCloudinary(file);
+        req.body.admin.profilePhoto = uploadToCloudinary === null || uploadToCloudinary === void 0 ? void 0 : uploadToCloudinary.secure_url;
+    }
+    const hashedPassword = yield bcrypt.hash(req.body.password, 12);
     const userData = {
-        email: data.admin.email,
+        email: req.body.admin.email,
         password: hashedPassword,
         role: client_1.UserRole.ADMIN,
     };
@@ -48,7 +54,7 @@ const createAdminIntoDb = (data) => __awaiter(void 0, void 0, void 0, function* 
             data: userData,
         });
         const createdAdminData = yield transactionClient.admin.create({
-            data: data.admin,
+            data: req.body.admin,
         });
         return createdAdminData;
     }));
