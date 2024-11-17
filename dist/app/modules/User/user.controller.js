@@ -16,6 +16,8 @@ exports.userController = void 0;
 const user_service_1 = require("./user.service");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const pick_1 = __importDefault(require("../../utils/pick"));
+const user_constant_1 = require("./user.constant");
 const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.userService.createAdminIntoDb(req);
     (0, sendResponse_1.default)(res, {
@@ -43,8 +45,22 @@ const createPatient = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
+const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log(req.query)
+    const filters = (0, pick_1.default)(req.query, user_constant_1.userFilterableFields);
+    const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = yield user_service_1.userService.getAllUsersFromDB(filters, options);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'Users data fetched!',
+        meta: result.meta,
+        data: result.data,
+    });
+}));
 exports.userController = {
     createAdmin,
     createDoctor,
     createPatient,
+    getAllUsers,
 };

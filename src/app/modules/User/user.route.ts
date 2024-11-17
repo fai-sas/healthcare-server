@@ -36,4 +36,10 @@ router.post(
   }
 )
 
+router.get(
+  '/',
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  userController.getAllUsers
+)
+
 export const userRoutes = router

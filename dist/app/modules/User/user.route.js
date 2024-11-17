@@ -23,4 +23,5 @@ router.post('/create-patient', imageUploader_1.imageUploader.upload.single('file
     req.body = user_validation_1.userValidation.createPatient.parse(JSON.parse(req.body.data));
     return user_controller_1.userController.createPatient(req, res, next);
 });
+router.get('/', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), user_controller_1.userController.getAllUsers);
 exports.userRoutes = router;
