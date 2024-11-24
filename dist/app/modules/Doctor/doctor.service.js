@@ -47,7 +47,7 @@ const getAllDoctorsFromDB = (filters, options) => __awaiter(void 0, void 0, void
         andConditions.push({
             doctorSpecialties: {
                 some: {
-                    specialities: {
+                    specialties: {
                         title: {
                             contains: specialties,
                             mode: 'insensitive',
@@ -79,7 +79,7 @@ const getAllDoctorsFromDB = (filters, options) => __awaiter(void 0, void 0, void
         include: {
             doctorSpecialties: {
                 include: {
-                    specialities: true,
+                    specialties: true,
                 },
             },
         },
@@ -105,7 +105,7 @@ const getSingleDoctorFromDB = (id) => __awaiter(void 0, void 0, void 0, function
         include: {
             doctorSpecialties: {
                 include: {
-                    specialities: true,
+                    specialties: true,
                 },
             },
         },
@@ -134,7 +134,7 @@ const updateDoctorIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, fu
                 yield transactionClient.doctorSpecialties.deleteMany({
                     where: {
                         doctorId: doctorInfo.id,
-                        specialitiesId: specialty.specialtiesId,
+                        specialtiesId: specialty.specialtiesId,
                     },
                 });
             }
@@ -144,7 +144,7 @@ const updateDoctorIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, fu
                 yield transactionClient.doctorSpecialties.create({
                     data: {
                         doctorId: doctorInfo.id,
-                        specialitiesId: specialty.specialtiesId,
+                        specialtiesId: specialty.specialtiesId,
                     },
                 });
             }
@@ -157,7 +157,7 @@ const updateDoctorIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, fu
         include: {
             doctorSpecialties: {
                 include: {
-                    specialities: true,
+                    specialties: true,
                 },
             },
         },

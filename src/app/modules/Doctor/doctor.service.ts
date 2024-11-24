@@ -30,7 +30,7 @@ const getAllDoctorsFromDB = async (
     andConditions.push({
       doctorSpecialties: {
         some: {
-          specialities: {
+          specialties: {
             title: {
               contains: specialties,
               mode: 'insensitive',
@@ -68,7 +68,7 @@ const getAllDoctorsFromDB = async (
     include: {
       doctorSpecialties: {
         include: {
-          specialities: true,
+          specialties: true,
         },
       },
     },
@@ -97,7 +97,7 @@ const getSingleDoctorFromDB = async (id: string): Promise<Doctor | null> => {
     include: {
       doctorSpecialties: {
         include: {
-          specialities: true,
+          specialties: true,
         },
       },
     },
@@ -132,7 +132,7 @@ const updateDoctorIntoDB = async (id: string, payload: TDoctorUpdate) => {
         await transactionClient.doctorSpecialties.deleteMany({
           where: {
             doctorId: doctorInfo.id,
-            specialitiesId: specialty.specialtiesId,
+            specialtiesId: specialty.specialtiesId,
           },
         })
       }
@@ -146,7 +146,7 @@ const updateDoctorIntoDB = async (id: string, payload: TDoctorUpdate) => {
         await transactionClient.doctorSpecialties.create({
           data: {
             doctorId: doctorInfo.id,
-            specialitiesId: specialty.specialtiesId,
+            specialtiesId: specialty.specialtiesId,
           },
         })
       }
@@ -160,7 +160,7 @@ const updateDoctorIntoDB = async (id: string, payload: TDoctorUpdate) => {
     include: {
       doctorSpecialties: {
         include: {
-          specialities: true,
+          specialties: true,
         },
       },
     },
