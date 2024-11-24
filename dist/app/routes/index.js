@@ -11,6 +11,7 @@ const doctor_routes_1 = require("../modules/Doctor/doctor.routes");
 const specialties_routes_1 = require("../modules/Specialties/specialties.routes");
 const patient_route_1 = require("../modules/Patient/patient.route");
 const schedule_routes_1 = require("../modules/Schedule/schedule.routes");
+const doctorSchedule_routes_1 = require("../modules/DoctorSchedule/doctorSchedule.routes");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -40,6 +41,10 @@ const moduleRoutes = [
     {
         path: '/schedule',
         route: schedule_routes_1.ScheduleRoutes,
+    },
+    {
+        path: '/doctor-schedule',
+        route: doctorSchedule_routes_1.DoctorScheduleRoutes,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
