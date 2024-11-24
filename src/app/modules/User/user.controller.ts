@@ -4,6 +4,7 @@ import sendResponse from '../../utils/sendResponse'
 import catchAsync from '../../utils/catchAsync'
 import pick from '../../utils/pick'
 import { userFilterableFields } from './user.constant'
+import { TAuthUser } from '../../interfaces/common'
 
 const createAdmin = catchAsync(async (req, res) => {
   const result = await userService.createAdminIntoDb(req)
@@ -66,10 +67,44 @@ const changeProfileStatus = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const getMyProfile = catchAsync(
+  async (req: Request & { user?: TAuthUser }, res: Response) => {
+    const user = req.user
+    const result = await userService.getMyProfileFromDb(user as TAuthUser)
+
+    sendResponse(res, {
+      status: httpStatus.OK,
+      success: true,
+      message: 'My profile data fetched!',
+      data: result,
+    })
+  }
+)
+
+const updateMyProfile = catchAsync(
+  async (req: Request & { user?: TAuthUser }, res: Response) => {
+    const user = req.user
+
+    const result = await userService.updateMyProfileIntoDb(
+      user as TAuthUser,
+      req
+    )
+
+    sendResponse(res, {
+      status: httpStatus.OK,
+      success: true,
+      message: 'My profile updated!',
+      data: result,
+    })
+  }
+)
+
 export const userController = {
   createAdmin,
   createDoctor,
   createPatient,
   getAllUsers,
+  getMyProfile,
+  updateMyProfile,
   changeProfileStatus,
 }

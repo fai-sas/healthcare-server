@@ -25,5 +25,10 @@ router.post('/create-patient', imageUploader_1.imageUploader.upload.single('file
     return user_controller_1.userController.createPatient(req, res, next);
 });
 router.get('/', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), user_controller_1.userController.getAllUsers);
+router.get('/my-profile', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN, client_1.UserRole.DOCTOR, client_1.UserRole.PATIENT), user_controller_1.userController.getMyProfile);
+router.patch('/update-my-profile', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN, client_1.UserRole.DOCTOR, client_1.UserRole.PATIENT), imageUploader_1.imageUploader.upload.single('file'), (req, res, next) => {
+    req.body = JSON.parse(req.body.data);
+    return user_controller_1.userController.updateMyProfile(req, res, next);
+});
 router.patch('/:id/status', (0, auth_1.default)(client_1.UserRole.SUPER_ADMIN, client_1.UserRole.ADMIN), (0, validateRequest_1.default)(user_validation_1.userValidation.updateStatus), user_controller_1.userController.changeProfileStatus);
 exports.userRoutes = router;

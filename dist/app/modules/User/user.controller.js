@@ -68,10 +68,32 @@ const changeProfileStatus = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result,
     });
 }));
+const getMyProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield user_service_1.userService.getMyProfileFromDb(user);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'My profile data fetched!',
+        data: result,
+    });
+}));
+const updateMyProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield user_service_1.userService.updateMyProfileIntoDb(user, req);
+    (0, sendResponse_1.default)(res, {
+        status: httpStatus.OK,
+        success: true,
+        message: 'My profile updated!',
+        data: result,
+    });
+}));
 exports.userController = {
     createAdmin,
     createDoctor,
     createPatient,
     getAllUsers,
+    getMyProfile,
+    updateMyProfile,
     changeProfileStatus,
 };

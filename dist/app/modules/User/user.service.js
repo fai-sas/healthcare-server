@@ -197,10 +197,104 @@ const changeProfileStatusIntoDb = (id, status) => __awaiter(void 0, void 0, void
     });
     return updateUserStatus;
 });
+const getMyProfileFromDb = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    const userInfo = yield prisma_1.default.user.findUniqueOrThrow({
+        where: {
+            email: user === null || user === void 0 ? void 0 : user.email,
+            status: client_1.UserStatus.ACTIVE,
+        },
+        select: {
+            id: true,
+            email: true,
+            needPasswordChange: true,
+            role: true,
+            status: true,
+        },
+    });
+    let profileInfo;
+    if (userInfo.role === client_1.UserRole.SUPER_ADMIN) {
+        profileInfo = yield prisma_1.default.admin.findUnique({
+            where: {
+                email: userInfo.email,
+            },
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.ADMIN) {
+        profileInfo = yield prisma_1.default.admin.findUnique({
+            where: {
+                email: userInfo.email,
+            },
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.DOCTOR) {
+        profileInfo = yield prisma_1.default.doctor.findUnique({
+            where: {
+                email: userInfo.email,
+            },
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.PATIENT) {
+        profileInfo = yield prisma_1.default.patient.findUnique({
+            where: {
+                email: userInfo.email,
+            },
+        });
+    }
+    return Object.assign(Object.assign({}, userInfo), profileInfo);
+});
+const updateMyProfileIntoDb = (user, req) => __awaiter(void 0, void 0, void 0, function* () {
+    const userInfo = yield prisma_1.default.user.findUniqueOrThrow({
+        where: {
+            email: user === null || user === void 0 ? void 0 : user.email,
+            status: client_1.UserStatus.ACTIVE,
+        },
+    });
+    const file = req.file;
+    if (file) {
+        const uploadToCloudinary = yield imageUploader_1.imageUploader.uploadToCloudinary(file);
+        req.body.profilePhoto = uploadToCloudinary === null || uploadToCloudinary === void 0 ? void 0 : uploadToCloudinary.secure_url;
+    }
+    let profileInfo;
+    if (userInfo.role === client_1.UserRole.SUPER_ADMIN) {
+        profileInfo = yield prisma_1.default.admin.update({
+            where: {
+                email: userInfo.email,
+            },
+            data: req.body,
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.ADMIN) {
+        profileInfo = yield prisma_1.default.admin.update({
+            where: {
+                email: userInfo.email,
+            },
+            data: req.body,
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.DOCTOR) {
+        profileInfo = yield prisma_1.default.doctor.update({
+            where: {
+                email: userInfo.email,
+            },
+            data: req.body,
+        });
+    }
+    else if (userInfo.role === client_1.UserRole.PATIENT) {
+        profileInfo = yield prisma_1.default.patient.update({
+            where: {
+                email: userInfo.email,
+            },
+            data: req.body,
+        });
+    }
+    return Object.assign({}, profileInfo);
+});
 exports.userService = {
     createAdminIntoDb,
     createDoctorIntoDb,
     createPatientIntoDb,
     getAllUsersFromDB,
+    getMyProfileFromDb,
     changeProfileStatusIntoDb,
+    updateMyProfileIntoDb,
 };
