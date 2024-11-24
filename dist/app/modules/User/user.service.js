@@ -166,9 +166,9 @@ const getAllUsersFromDB = (params, options) => __awaiter(void 0, void 0, void 0,
             status: true,
             createdAt: true,
             updatedAt: true,
-            Admin: true,
-            Patient: true,
-            Doctor: true,
+            admin: true,
+            patient: true,
+            doctor: true,
         },
     });
     const total = yield prisma_1.default.user.count({

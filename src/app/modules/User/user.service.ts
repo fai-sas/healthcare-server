@@ -159,9 +159,9 @@ const getAllUsersFromDB = async (params: any, options: TPaginationOptions) => {
       status: true,
       createdAt: true,
       updatedAt: true,
-      Admin: true,
-      Patient: true,
-      Doctor: true,
+      admin: true,
+      patient: true,
+      doctor: true,
     },
   })
 
