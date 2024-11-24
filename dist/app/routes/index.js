@@ -9,6 +9,7 @@ const admin_route_1 = require("../modules/Admin/admin.route");
 const auth_route_1 = require("../modules/Auth/auth.route");
 const doctor_routes_1 = require("../modules/Doctor/doctor.routes");
 const specialties_routes_1 = require("../modules/Specialties/specialties.routes");
+const patient_route_1 = require("../modules/Patient/patient.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -26,6 +27,10 @@ const moduleRoutes = [
     {
         path: '/doctor',
         route: doctor_routes_1.DoctorRoutes,
+    },
+    {
+        path: '/patient',
+        route: patient_route_1.PatientRoutes,
     },
     {
         path: '/specialties',
